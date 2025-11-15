@@ -1,0 +1,8 @@
+**İşte bazı Flet widgetları**
+
+*Page: Ana pencere için
+*Column: Horizontal(yatay) widget konumlandırmak için
+#*Row: Row(Dikey) widget konumlandırmak için
+#*Button: Kullanıcı etkileşimi ile fonksiyonları tetiklemek vb. işlemler için kullanılan buton/düğme widgetı
+#*Text: Label yani etiket görevi gören(Yazı) widgetı
+#*TextFiel: Kullanıcı girdisi için widget 
