@@ -1,0 +1,53 @@
+import flet 
+from flet import Page,TextField,Text,Button,Row,Column
+
+def main(page: Page):
+    def calculate(arg,num1,num2):
+        if arg == '+':
+            output_label.value = str(int(num1) + int(num2))
+            output_label.update()
+        
+        elif arg == '-':
+            output_label.value = str(int(num1) - int(num2))
+            output_label.update()
+        
+        elif arg == '/':
+            output_label.value = str(int(num1) / int(num2))
+            output_label.update()
+        
+        elif arg == '*':
+            output_label.value = str(int(num1) * int(num2))
+            output_label.update()
+
+        else:
+            output_label.value = 'Hata'
+            output_label.update()
+    
+    output_label = Text(value='Sonuç: ',text_align='center',font_family='Arial',size=44,weight=20,italic=True)
+    n1 = TextField(label='Sayı-1',hint_text='Bir sayı giriniz...')
+    n2 = TextField(label='Sayı-2',hint_text='Bir sayı giriniz...')
+
+    b1 = Button(text='+',on_click=lambda f: calculate(b1.text,n1.value,n2.value))
+    b2 = Button(text='-',on_click=lambda f: calculate(b2.text,n1.value,n2.value))
+    b3 = Button(text='/',on_click=lambda f: calculate(b3.text,n1.value,n2.value))
+    b4 = Button(text='*',on_click=lambda f: calculate(b4.text,n1.value,n2.value))
+
+    layout_horizontal = Row(controls=[b1,b2,b3,b4],alignment='center',vertical_alignment='center')
+    layout_vertical = Column(controls=[n1,n2,output_label],alignment='cener',horizontal_alignment='center')
+
+    page.controls.append(layout_vertical)
+    page.controls.append(layout_horizontal)
+
+    page.update()
+
+flet.app(target=main)
+
+
+#kullanılan widgetlar, TextField,Page,Button,Text
+
+#Page = anasayfa 
+#TextField = kullanıcı girdisi 
+#Button = Fonksiyon tetiklemesi için buton
+#Text = Çıktı gösterimi için etiket/Yazı
+#Column = Vertical(Dikey) sıralama için 
+#Row = Horizontal(Yatay) sıralama için
