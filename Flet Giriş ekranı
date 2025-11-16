@@ -1,0 +1,57 @@
+import flet
+from flet import Page,Text,ElevatedButton,TextField,Column
+
+pass_token = 'Ruhi1234'
+user_token = 'Ruhi Çenet'
+
+def MainWindow(page: Page):
+    page.bgcolor = flet.Colors.WHITE
+    page.title =  'E-Nabız giriş'
+        
+    lbl = Text(value='Lütfen Şifrenizi girin...',text_align='center',font_family='Arial',weight=30,color='white',bgcolor='orange')
+    vertical_layouıt = Column(controls=[lbl],
+                              alignment='center',
+                              horizontal_alignment='center',
+                              width=page.width,
+                              height=page.height)
+    
+    user_name_input = TextField(hint_text='Kullanıcı adı',label='İsim',text_align='center')
+    user_password_input = TextField(hint_text='Kullanıcı Şifresi',label='Şifre',text_align='center',password=True)
+    apply_button = ElevatedButton(text='Giriş',color='white',bgcolor='purple',width=600,
+                                  on_click=lambda f : SignalFunction(user_name_input.value,
+                                                                    user_password_input.value,lbl))
+    
+    widget_lst = [user_name_input,user_password_input,apply_button]
+
+    for widget in widget_lst:
+        vertical_layouıt.controls.append(widget)
+
+    page.controls.append(vertical_layouıt)
+    page.update()
+
+    def SignalFunction(i1,i2,label):
+        if i1 == user_token and i2 == pass_token:
+            label.value = 'Şifreniz ve kullanıcı adınız doğru!'
+            label.color = 'white'
+            label.bgcolor = flet.Colors.GREEN
+            label.update()
+
+        elif i1 != user_token and i2 == pass_token:
+            label.value = 'Kullanıcı adınız yanlış lütfen kullanıcı adınızı tekrardan giriniz!'
+            label.color = 'white'
+            label.bgcolor = flet.Colors.RED
+            label.update()
+
+        elif i1 == user_token and i2 != pass_token:
+            label.value = 'Şifreniz yanlış lütfen şifrenizi tekrar giriniz!'
+            label.color = 'white'
+            label.bgcolor = flet.Colors.RED
+            label.update()
+
+        else:
+            label.value = 'Şifreniz ve Kullanıcı adınız yanlış! Lütfen tekrar giriniz!!!!'
+            label.color = 'white'
+            label.bgcolor = flet.Colors.RED_ACCENT_700
+            label.update()
+
+flet.app(target=MainWindow,view=flet.WEB_BROWSER)
