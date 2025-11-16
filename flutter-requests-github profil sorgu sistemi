@@ -1,0 +1,95 @@
+import flet
+from flet import Page,Column,Row,ElevatedButton,Text,TextField,CircleAvatar
+import requests as rq
+
+def main(page: Page):
+    page.bgcolor = flet.Colors.WHITE
+    def get_request(username: str) -> dict:
+        token = 'your_token '
+        headers = {
+            'Authorization': token
+        }
+
+        api = f'https://api.github.com/users/{username}'
+        response = rq.get(url=api,headers=headers)
+
+        if response.status_code == 200 or response.status_code == 201:
+            return {'status': 'Succesfuly',
+                    'data': response.json()
+                    }
+        
+        else:
+            return {'status': response.status_code,
+                    'data': None}
+    
+    def handle_click(e):
+        dat = get_request(textfield.value)
+
+        avatar_box.foreground_image_src = f'{dat['data']['avatar_url']}'
+        user_name_label.value = f'Username: {dat['data']['login']}'
+        followers_label.value = f'Followers: {dat['data']['followers']}'
+        followings_label.value = f'Following: {dat['data']['following']}'
+        repos_label.value = f'Public Repos: {str(dat['data']['public_repos'])}'
+
+        page.update()
+    
+    init_data = get_request('nazfelaksuresi8a4')
+
+    if init_data['status'] == 'Succesfuly':
+        avatar_box = CircleAvatar(foreground_image_src=init_data['data']['avatar_url'],radius=100)
+        textfield = TextField(label='Kullanıcı adı',
+                              hint_text='Kullanıcı adınızı giriniz...',
+                              text_align='center',
+                              align_label_with_hint='center',
+                              color='black')
+        
+        apply_btn = ElevatedButton(
+            text='Sorgula',
+            color='black',
+            bgcolor=flet.Colors.PURPLE,
+            width=300*2,
+            on_click=handle_click
+        )
+
+        user_name_label = Text(value=f'User name: {init_data['data']['login']}',
+                            color='black',
+                            font_family='Arial',
+                            italic=True,
+                            weight=40)
+        repos_label = Text(value=f'Repos: {init_data['data']['public_repos']}',
+                            color='black',
+                            font_family='Arial',
+                            italic=True,
+                            weight=20) 
+        followers_label = Text(value=f'Followers: {init_data['data']['followers']}',
+                            color='black',
+                            font_family='Arial',
+                            italic=True,
+                            weight=20)
+        followings_label = Text(value=f'Following: {init_data['data']['following']}',
+                            color='black',
+                            font_family='Arial',
+                            italic=True,
+                            weight=20)
+    
+        row = Row(controls=[repos_label,
+                            followers_label,
+                            followings_label],
+                            alignment='center',
+                            width=page.width)
+        
+        page.horizontal_alignment = 'center'
+        
+        page.controls.append(avatar_box)
+        page.controls.append(user_name_label)
+        page.controls.append(row)
+        page.controls.append(textfield)
+        page.controls.append(apply_btn)
+
+        page.update()
+
+    else:
+        print(init_data['status'])
+
+        
+flet.app(target=main)
