@@ -1,0 +1,36 @@
+import flet
+from flet import Page,Text,ElevatedButton,TextField,Column,ListView,Checkbox,Icons,IconButton,Row
+
+def MainWindow(page: Page):
+    page.bgcolor = flet.Colors.WHITE
+
+    def add_todo(layout,text):
+        if text:
+            if text is not None and isinstance(text,str):
+                layout.controls.append(Checkbox(label=text,value=False))
+                page.update()        
+
+    textfield = TextField(label='Todo',hint_text='Todo İsmi...')
+    btn = IconButton(icon=Icons.ADD,
+               icon_color=flet.Colors.AMBER,
+               icon_size=30*2,
+               bgcolor=flet.Colors.PURPLE,
+               on_click=lambda f : add_todo(list_view,textfield.value))
+    
+    list_view = ListView(controls=[Checkbox(label='TEST',value=True)],expand=1,spacing=10,padding=10)
+
+
+    row = Row(controls=[
+        textfield,
+        btn
+    ])
+
+    column = Column(controls=[list_view],
+                    horizontal_alignment='center')
+
+    page.controls.append(row)
+    page.controls.append(column)
+
+    page.update()
+
+flet.app(target=MainWindow)
