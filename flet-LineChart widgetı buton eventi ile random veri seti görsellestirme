@@ -1,0 +1,42 @@
+import flet
+from flet import Page,LineChart,LineChartData,LineChartDataPoint,Column,Icons,IconButton
+from random import randint
+
+def mainWindow(page: Page):
+    def update_plot(e):
+        point_list.clear()
+        for _ in range(100):
+            point_list.append(LineChartDataPoint(x=_,y=randint(0,100)))
+
+        lineWidget.data_series[0].data = point_list
+        page.update()
+
+    btn = IconButton(icon=Icons.ADD,
+                     bgcolor='purple',
+                     on_click=update_plot)
+    
+    lst = [randint(0,100) for _ in range(100)]
+    point_list = []
+    i = 0
+
+    for v in lst:
+        point_list.append(LineChartDataPoint(x=i,y=v))
+        i += 1
+
+    lineWidget = LineChart(
+        data_series=[
+            LineChartData(data_points=point_list,
+                          color=flet.Colors.GREY,
+                          stroke_width=2
+                )
+           ]
+       )
+
+
+    c1 = Column(controls=[lineWidget,btn],
+                alignment='center')
+
+    page.controls.append(c1)
+    page.update()
+
+flet.app(target=mainWindow)
